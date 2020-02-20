@@ -145,11 +145,13 @@ class SE2:
             result._C = self._C * rhs._C
             result._r = self._C * rhs._r + self._r
             return result
-        elif isinstance(rhs, np.ndarray) and (rhs.shape == (3,) or rhs.shape == (3, 1)):
+        elif isinstance(rhs, np.ndarray) and rhs.shape == (2,):
             return self._C @ rhs + self._r
+        elif isinstance(rhs, np.ndarray) and rhs.ndim > 1 and rhs.shape[-2] == 2:
+            return self._C @ rhs + self._r[:, np.newaxis]
         else:
             raise TypeError(
-                "Unsupported operand type for *; must be SE2 or numpy.ndarray with shape (3,) or (3,1)")
+                "Unsupported operand type for *; must be SE2 or numpy.ndarray compatible with left multiplication by 2x2 array")
 
     def __matmul__(self, rhs):
         return self.__mul__(rhs)

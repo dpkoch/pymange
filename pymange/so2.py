@@ -62,11 +62,11 @@ class SO2:
             result = SO2()
             result._C = self._C @ rhs._C
             return result
-        elif isinstance(rhs, np.ndarray) and (rhs.shape == (2,) or rhs.shape == (2, 1) or rhs.shape == (2, 2)):
+        elif isinstance(rhs, np.ndarray) and (rhs.shape == (2,) or rhs.shape[-2] == 2):
             return self._C @ rhs
         else:
             raise TypeError(
-                "Unsupported operand type for *; must be SO2 or numpy.ndarray with shape (2,), (2,1) or (2,2)")
+                "Unsupported operand type for *; must be SO2 or numpy.ndarray compatible with left multiplication by 2x2 array")
 
     def __matmul__(self, rhs):
         return self.__mul__(rhs)
